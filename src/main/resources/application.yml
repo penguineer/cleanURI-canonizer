@@ -19,3 +19,7 @@ rabbitmq:
   username: ${AMQP_USER:}
   password: ${AMQP_PASS}
   virtual-host: ${AMQP_VHOST:/}
+
+canonizer:
+  reduction-task-queue: ${CANONIZER_TASK_QUEUE}
+  retrieval-task-queue: ${RETRIEVAL_TASK_QUEUE}

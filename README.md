@@ -11,6 +11,8 @@ Configuration is done using environment variables:
 * `AMQP_USER`: RabbitMQ user
 * `AMQP_PASS`: RabbitMQ password
 * `AMQP_VHOST`: RabbitMQ virtual host, defaults to '/'
+* `CANONIZER_TASK_QUEUE`: AMQP queue for receiving reduction tasks
+* `RETRIEVAL_TASK_QUEUE`: AMQP queue retrieval tasks
 
 ## Deployment
 
