@@ -32,18 +32,26 @@ public class ReductionTaskHandler {
                         RabbitAcknowledgement acknowledgement) {
         final ExtractionTask.Builder taskBuilder = ExtractionTask.Builder.copy(task);
 
-        Optional<Canonizer> canonizer = canonizers.stream()
-                .filter(c -> c.isSuitable(task.getRequest().getURI()))
-                .findAny();
+        try {
+            Optional<Canonizer> canonizer = canonizers.stream()
+                    .filter(c -> c.isSuitable(task.getRequest().getURI()))
+                    .findAny();
 
-        if (canonizer.isPresent()) {
-            final URI canonized = canonizer.get().canonize(task.getRequest().getURI());
-            taskBuilder.setCanonizedURI(canonized);
-        } else {
-            taskBuilder.addError("Could not find a matching canonizer!");
+            if (canonizer.isPresent()) {
+                    final URI canonized = canonizer.get().canonize(task.getRequest().getURI());
+                    taskBuilder.setCanonizedURI(canonized);
+            } else {
+                taskBuilder.addError("Could not find a matching canonizer!");
+            }
+        } catch (IllegalArgumentException e) {
+            taskBuilder.addError(e.getMessage());
         }
 
-        emitter.send(taskQueue, correlationId, replyTo, taskBuilder.instance());
+        final ExtractionTask resultTask = taskBuilder.instance();
+        emitter.send(
+                resultTask.getErrors().isEmpty() ? taskQueue : replyTo,
+                correlationId, replyTo, resultTask);
+
         acknowledgement.ack();
     }
 }
