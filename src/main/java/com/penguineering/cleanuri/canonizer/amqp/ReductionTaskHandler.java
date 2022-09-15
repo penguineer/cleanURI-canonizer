@@ -16,8 +16,8 @@ import java.util.Optional;
 
 @RabbitListener
 public class ReductionTaskHandler {
-    @Property(name = "canonizer.retrieval-task-queue")
-    String taskQueue;
+    @Property(name = "canonizer.extractor-task-rk")
+    String extractorTaskRK;
 
     @Inject
     ExtractionTaskEmitter emitter;
@@ -49,7 +49,7 @@ public class ReductionTaskHandler {
 
         final ExtractionTask resultTask = taskBuilder.instance();
         emitter.send(
-                resultTask.getErrors().isEmpty() ? taskQueue : replyTo,
+                resultTask.getErrors().isEmpty() ? extractorTaskRK : replyTo,
                 correlationId, replyTo, resultTask);
 
         acknowledgement.ack();

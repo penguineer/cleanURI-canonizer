@@ -26,4 +26,4 @@ rabbitmq:
 
 canonizer:
   reduction-task-queue: ${CANONIZER_TASK_QUEUE}
-  retrieval-task-queue: ${RETRIEVAL_TASK_QUEUE}
+  extractor-task-rk: ${EXTRACTOR_TASK_RK}
