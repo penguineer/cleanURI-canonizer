@@ -11,8 +11,8 @@ Configuration is done using environment variables:
 * `AMQP_USER`: RabbitMQ user
 * `AMQP_PASS`: RabbitMQ password
 * `AMQP_VHOST`: RabbitMQ virtual host, defaults to '/'
-* `CANONIZER_TASK_QUEUE`: AMQP queue for receiving reduction tasks
-* `RETRIEVAL_TASK_QUEUE`: AMQP queue retrieval tasks
+* `CANONIZER_TASK_QUEUE`: AMQP queue (inbound) for receiving reduction tasks from the [API Gateway](https://github.com/penguineer/cleanURI-apigateway)
+* `EXTRACTOR_TASK_RK`: AMQP routing key (outbound) for tasks to the [Extractor](https://github.com/penguineer/cleanURI-extractor)
 
 ## Deployment
 
