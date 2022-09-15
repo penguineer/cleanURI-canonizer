@@ -1,6 +1,6 @@
 # cleanURI - Canonizer
 
-> Reduce a URL to canonical form for the cleanURI service.
+> Reduce a URL to canonical form for the [cleanURI](https://github.com/penguineer/cleanURI) service.
 
 ## Configuration
 
