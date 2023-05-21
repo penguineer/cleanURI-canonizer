@@ -23,7 +23,7 @@ With the configuration stored in a file `.env`, the service can be run as follow
 ```bash
 docker run --rm \
            --env-file .env \
-           mrtux/cleanrui-canonizer
+           mrtux/cleanuri-canonizer
 ```
 
 The service does not store any state and therefore needs no mount points or other persistence.
