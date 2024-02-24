@@ -13,7 +13,6 @@ import jakarta.inject.Inject;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 
 @RabbitListener
@@ -36,23 +35,15 @@ public class ReductionTaskHandler {
         final URI requestedURI = task.getRequest().getURI();
 
         try {
-            Optional<Site> site = sites.stream()
+            sites.stream()
                     .filter(c -> c.canProcessURI(requestedURI))
-                    .findAny();
-
-            Optional<Canonizer> canonizer = site
-                    .flatMap(s -> {
-                        Optional<Canonizer> newC = s.newCanonizer(requestedURI);
-                        newC.ifPresent(c ->
-                                c.withExceptionHandler((l, e) -> {
-                                    // add error if level is warning or higher
-                                    if (l.intValue() <= Level.WARNING.intValue())
-                                        taskBuilder.addError(e.getMessage());
-                                }));
-                        return newC;
-                    });
-
-            canonizer
+                    .findAny()
+                    .flatMap(s -> s.newCanonizer(requestedURI))
+                    .map(c -> (Canonizer) c.withExceptionHandler((l, e) -> {
+                        // add error if level is warning or higher
+                        if (l.intValue() <= Level.WARNING.intValue())
+                            taskBuilder.addError(e.getMessage());
+                    }))
                     .flatMap(com.penguineering.cleanuri.site.Canonizer::canonize)
                     .ifPresentOrElse(
                             taskBuilder::setCanonizedURI,
